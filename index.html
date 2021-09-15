@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>videojs-hlsjs Demo</title>
+    <link href="./node_modules/video.js/dist/video-js.css" rel="stylesheet" />
+  </head>
+  <body>
+    <video
+      id="videojs-hlsjs-player"
+      class="video-js"
+    ></video>
+    <ul>
+      <li><a href="./test/index.html">Run unit tests in browser.</a></li>
+    </ul>
+    <script src="./node_modules/video.js/dist/video.js"></script>
+    <script src="./hls.min.js"></script>
+    <script src="./dist/videojs-hlsjs.js"></script>
+    <script>
+      ;(function (window, videojs) {
+        var player = (window.player = videojs('videojs-hlsjs-player', {
+          techOrder: ['html5', 'Hlsjs'],
+          streamedianjs: {
+            mediaDataSource: {
+              isLive: true,
+              cors: true,
+              withCredentials: false,
+            },
+            // config: {},
+          },
+          autoplay: true,
+          controls: true, // 是否显示控制条
+          language: 'zh-CN', // 设置语言
+          muted: true, // 是否静音
+          width: '400px',
+          height: '300px',
+          controlBar: {
+            progressControl: false,
+            liveDisplay: true,
+            remainingTimeDisplay: false
+          }
+        }))
+        this.player.src({
+          src: 'https://hls01open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8',
+          type: 'video/hls'
+        })
+      })(window, window.videojs)
+    </script>
+  </body>
+</html>

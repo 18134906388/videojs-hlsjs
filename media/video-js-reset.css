@@ -1,0 +1,13 @@
+.video-js .vjs-video-back{
+  width: 6em;
+  text-align: left;
+  cursor: pointer;
+  font-weight: normal;
+  font-style: normal;
+  font-family: Arial, Helvetica, sans-serif;
+  word-break: initial;
+}
+
+.video-js .vjs-video-back .vjs-icon-placeholder::before{
+  content: '视频回放';
+}

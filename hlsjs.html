@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Streamedian.js</title>
+</head>
+<body>
+  <script src="./hls.min.js"></script>
+  <video id="videoElement" muted autoplay >
+  </video>
+  <script>
+    var video = document.getElementById("videoElement");
+    var videoSrc =
+      "https://hls01open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8";
+    if (Hls.isSupported()) {
+      let hls = new Hls({defaultAudioCodec: 'mp4a.40.2'});
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function () {
+        console.log("video");
+        video.play();
+      });
+      hls.on(Hls.Events.ERROR, function (event, data) {
+        if (data.fatal) {
+          switch (data.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR:
+              // try to recover network error
+              console.log("fatal network error encountered, try to recover");
+              hls.startLoad();
+              break;
+            case Hls.ErrorTypes.MEDIA_ERROR:
+              console.log("fatal media error encountered, try to recover");
+              hls.recoverMediaError();
+              break;
+            default:
+              // cannot recover
+              hls.destroy();
+              break;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

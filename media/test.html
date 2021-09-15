@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="./video-js.css" rel="stylesheet" />
+    <link href="./video-js-reset.css" rel="stylesheet" />
+    <script src="./video.min.js"></script>
+    <script src="./hls.min.js"></script>
+    <script src="./videojs-hlsjs.js"></script>
+    <script src="./flv.min.js"></script>
+    <script src="./videojs-flvjs.min.js"></script>
+    <script src="./streamedian.min.js"></script>
+    <script src="./videojs-streamedianjs.min.js"></script>
+  </head>
+  <body>
+    <video id="my-video1" class="video-js">
+      <source
+        src="https://hls01open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8"
+        type="video/x-hls"
+      />
+      <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank"
+          >supports HTML5 video</a
+        >
+      </p>
+    </video>
+    <video id="my-video2" class="video-js">
+      <source
+        src="https://mister-ben.github.io/videojs-flvjs/bbb.flv"
+        type="video/x-flv"
+      />
+      <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank"
+          >supports HTML5 video</a
+        >
+      </p>
+    </video>
+    <video id="my-video3" class="video-js">
+      <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank"
+          >supports HTML5 video</a
+        >
+      </p>
+    </video>
+  </body>
+  <script>
+    // hls点播测试地址https://yunqivedio.alicdn.com/2017yq/v2/0x0/96d79d3f5400514a6883869399708e11/96d79d3f5400514a6883869399708e11.m3u8
+    // hls直播测试地址https://hls01open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8
+    // flv点播测试地址https://mister-ben.github.io/videojs-flvjs/bbb.flv
+    // flv直播测试地址https://flvopen.ys7.com:9188/openlive/376d82d20a6c479b829222acca274b61.hd.flv
+    let options = {
+      techOrder: ['html5', 'Hlsjs', 'Flvjs', 'Streamedianjs'],
+      autoplay: true,
+      controls: true, // 是否显示控制条
+      language: 'zh-CN', // 设置语言
+      muted: true, // 是否静音
+      width: '400px',
+      height: '300px',
+      controlBar: {
+        playToggle: false,
+        progressControl: false,
+        // liveDisplay: false,
+		    fullscreenToggle: true, // 全屏按钮，默认为true
+        pictureInPictureToggle: true, // 画中画按钮，默认为true
+        volumePanel: true, // 声音面板
+        currentTimeDisplay: false, // 当前播放时间
+        timeDivider: false, // 时间分割线
+        durationDisplay: false, // 总时间
+        remainingTimeDisplay: false, // 剩余时间
+      },
+    }
+    ;(function (window, videojs) {
+      // 自定义按钮--start
+      const Button = videojs.getComponent('Button')
+      const Component = videojs.getComponent('Component')
+      class VideoBackButton extends Button {
+        constructor(player, options = {}) {
+          super(player, options)
+          console.log(player, options)
+          this.controlText('视频回放')
+        }
+        buildCSSClass() {
+          return 'vjs-video-back'
+        }
+        handleClick() {
+          console.log('Previous')
+        }
+      }
+      Component.registerComponent('VideoBackButton', VideoBackButton)
+      // 自定义按钮--end
+      let player1 = videojs('my-video1', options)
+      player1.src({
+        src: 'rtsp://10.45.154.187:555/live/32011500001110000014-1/0',
+        type: 'video/hls'
+      })
+      player1.on('click', (e) => {
+        console.log(player1)
+        debugger
+      })
+      let player3 = videojs('my-video3', options)
+      player3.src({
+        src: 'rtsp://10.45.154.187:555/live/32011500001110000014-1/0',
+        type: 'video/rtsp',
+        withCredentials: false,
+        socket: 'ws://10.45.154.187:8060/ws',
+        bufferDuration: 5,
+      })
+      player3.on('error', (e,a) => {
+        console.log(player3)
+        debugger
+      })
+    })(window, window.videojs)
+  </script>
+</html>
